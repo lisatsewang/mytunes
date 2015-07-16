@@ -15,6 +15,7 @@ var LibraryEntryView = Backbone.View.extend({
       // this.model.delete();
 
       //this.model.play(); //this.model = a song
+      this.model.play();
       this.model.enqueue();
       
       // if (this.model)

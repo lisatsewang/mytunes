@@ -14,20 +14,39 @@ var AppModel = Backbone.Model.extend({
     end up referring to the window. That's just what happens with all JS events. The handlers end up
     getting called from the window (unless we override it, as we do here). */
 
+
     var SongCollection = params.library;
+    var QueueCollection = this.get('songQueue');
+
     SongCollection.on('enqueue', function(song){
       this.get('songQueue').add(song); //refactored to Songs.js
-      console.log('test');
-      if(this.get('songQueue').length===0){
-         this.set('currentSong', song);
-
-      }
     }, this);
 
+    QueueCollection.on('songEnd', function(song){
+      // var nextSong = queue.playFirst();
+      // console.log('song ended in APPMODEL');
+      // debugger
+      // var queue = this.collection;
+      var queue = this.get('songQueue');
+      queue.remove(song);
+      queue.playFirst();
+      // song.ended();
+      
+      // this.get('songQueue').add(song); //refactored to Songs.js
+    }, this);
+
+    QueueCollection.on('PlayFirst', function(){
+      var queue = this.get('songQueue');
+      // console.log('Inside of PlayFirst');
+      var nextSong = queue.at(0);
+      this.set('currentSong', nextSong);
+
+    }, this);
 
     params.library.on('play', function(song){ //params = {library:library} = Songs (collection)
-      //this.get('songQueue').add(song); //refactored to SongModel.js
-      // debugger
+      if(this.get('songQueue').length===0){
+         this.set('currentSong', song);
+      } //if
     }, this);
   }
 
