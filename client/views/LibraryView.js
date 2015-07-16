@@ -17,6 +17,6 @@ var LibraryView = Backbone.View.extend({
         return new LibraryEntryView({model: song}).render();
       })
     );
-  }
+  } //render()
 
 });
